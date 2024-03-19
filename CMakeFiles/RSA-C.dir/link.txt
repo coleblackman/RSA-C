@@ -1,0 +1,1 @@
+/usr/bin/cc -rdynamic CMakeFiles/RSA-C.dir/main.c.o -o RSA-C 
