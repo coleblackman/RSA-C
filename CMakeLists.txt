@@ -8,3 +8,6 @@ project(RSA-C)
 
 # Add the executable target
 add_executable(RSA-C main.c)
+
+# Link math library
+target_link_libraries(RSA-C m)
