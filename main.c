@@ -8,7 +8,7 @@
 #include <time.h>
 #include <math.h>
 
-#define MAX_RAND 78498 //maximum random number 
+#define MAX_RAND  78498 //maximum random number 
 
 #include "main.h"
 
@@ -55,7 +55,7 @@ int main() {
     // Encrypt using RSA
     int* encrypted = encrypt(n, e, m);
     // Print the ciphertext C
-    for (int i = 0; i < sizeof(encrypted)/sizeof(int); i++) {
+    for (int i = 0; i < strlen(m)-1; i++) {
         printf("[%d]", encrypted[i]);
     }
     puts("");
@@ -74,17 +74,12 @@ int gcd(int a, int b) {
 }
 int mul_inv(int a, int b)
 {
-    //https://rosettacode.org/wiki/Modular_inverse
-	int b0 = b, t, q;
-	int x0 = 0, x1 = 1;
-	if (b == 1) return 1;
-	while (a > 1) {
-		q = a / b;
-		t = b, b = a % b, a = t;
-		t = x0, x0 = x1 - q * x0, x1 = t;
-	}
-	if (x1 < 0) x1 += b0;
-	return x1;
+    //naive: https://www.geeksforgeeks.org/multiplicative-inverse-under-modulo-m/
+    for (int i = 1; i < b; i++) {
+        if (((a % b) *(i%b)) % b == 1) {
+            return i;
+        }
+    }
 }
 uint32_t getPrime (uint32_t index) {
     // I generated a list of all primes below 10^6 in R
@@ -109,13 +104,17 @@ uint32_t getPrime (uint32_t index) {
 int* encrypt(uint32_t n, uint32_t e, char* m) {
     printf("Call to encrypt with m[0] = %d, m[1] = %d\n", m[0], m[1]);
     int * encrypted = (int*)malloc(strlen(m)*sizeof(int)); // allocate memory so it doesn't go out of scope
-    for (int i = 0; i < strlen(m); i++) {
-        printf("First element: m[i] = %d, m[i]^e = %d\n", m[i], (int)pow((int)m[i], e));
+    for (int i = 0; i < strlen(m)-1; i++) {
+        printf("Encrypt element: m[i] = %c (%d), m[i]^e = %d\n", m[i], m[i], (int)pow((int)m[i], e));
         encrypted[i] = (int)pow((int)m[i], e) % n;
     }
-    return encrypted;
+   return encrypted;
+
 }
+
+
 void decrypt(int* encrypted, uint32_t n, uint32_t d) {
     // TODO decrypt
     // TODO print out decrypted message with printf
+   // printf("decrypted text: ");
 }
